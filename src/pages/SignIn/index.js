@@ -1,13 +1,25 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
+import {connect} from 'react-redux'; 
+import {signIn} from './SignInActions';
 
-const SignIn = () => {
+const SignIn = (props) => {
+    const {account, signIn} = props;
+
+    const submitHandler = e => {
+        e.preventDefault();
+
+        signIn({email: 'alex@testee.com', password: '123445'});
+    }
+
+    console.log('*** SignIn.account', account);
+
     return (
         <div className="container h-100 pt-5">
             <h1>Efetue seu login</h1>
 
             <div className="d-flex flex-column h-100">
-                <form>
+                <form onSubmit={submitHandler}>
                     <div className="form-group">
                         <label>Email</label>
                         <input type="email" className="form-control" />
@@ -19,7 +31,7 @@ const SignIn = () => {
                     </div>
 
                     <div>
-                        <button type="submit" class="btn btn-info btn-round">Entrar</button>
+                        <button type="submit" className="btn btn-info btn-round">Entrar</button>
                     </div>
                 </form>
 
@@ -32,4 +44,8 @@ const SignIn = () => {
     )
 }
 
-export default SignIn;
+const mapStateToProps = (state) => {
+    return {account: state.signIn.account}
+}
+
+export default connect(mapStateToProps, {signIn})(SignIn);
